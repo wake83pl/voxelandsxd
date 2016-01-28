@@ -104,7 +104,7 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 			// Set material flags and texture
 			node->setMaterialTexture( 0, driver->getTexture(getTexturePath(m.texture).c_str()));
 			video::SMaterial& material = node->getMaterial(0);
-			material.setFlag(video::EMF_LIGHTING, false);
+			material.setFlag(video::EMF_LIGHTING, true);
 			material.setFlag(video::EMF_TRILINEAR_FILTER, use_trilinear_filter);
 			material.setFlag(video::EMF_BILINEAR_FILTER, use_bilinear_filter);
 			material.setFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);
@@ -127,7 +127,7 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 				v2f pos = m.tiles[t].texture.pos;
 				v2f size = m.tiles[t].texture.size;
 				video::SMaterial& material = mesh->getMeshBuffer((i*6)+t)->getMaterial();
-				material.setFlag(video::EMF_LIGHTING, false);
+				material.setFlag(video::EMF_LIGHTING, true);
 				material.setFlag(video::EMF_BILINEAR_FILTER, false);
 				m.tiles[i].applyMaterialOptions(material);
 				material.setTexture(0, atlas);
@@ -143,7 +143,7 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 		bool use_anisotropic_filter = g_settings->getBool("anisotropic_filter");
 		scene::IBillboardSceneNode *bill = smgr->addBillboardSceneNode(NULL, v2f(1, 1), v3f(0,0,0), -1);
 		bill->setMaterialTexture(0, driver->getTexture(getTexturePath(m.texture).c_str()));
-		bill->setMaterialFlag(video::EMF_LIGHTING, false);
+		bill->setMaterialFlag(video::EMF_LIGHTING, true);
 		bill->setMaterialFlag(video::EMF_TRILINEAR_FILTER, use_trilinear_filter);
 		bill->setMaterialFlag(video::EMF_BILINEAR_FILTER, use_bilinear_filter);
 		bill->setMaterialFlag(video::EMF_ANISOTROPIC_FILTER, use_anisotropic_filter);

@@ -25,6 +25,7 @@
 
 #include "common_irrlicht.h"
 #include <ISceneNode.h>
+#include <ILightSceneNode.h>
 
 #ifndef SKY_HEADER
 #define SKY_HEADER
@@ -83,9 +84,11 @@ private:
 	video::SColor m_bgcolor;
 	video::SColor m_skycolor;
 	video::SColorf m_cloudcolor_f;
+	video::SColor m_ambient;
 	v3f m_stars[SKY_STAR_COUNT];
 	u16 m_star_indices[SKY_STAR_COUNT*4];
 	video::S3DVertex m_star_vertices[SKY_STAR_COUNT*4];
+	scene::ILightSceneNode *m_light;
 };
 
 #endif

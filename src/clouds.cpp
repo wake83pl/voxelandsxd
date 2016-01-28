@@ -45,7 +45,7 @@ Clouds::Clouds(
 {
 	dstream<<__FUNCTION_NAME<<std::endl;
 
-	m_material.setFlag(video::EMF_LIGHTING, false);
+	m_material.setFlag(video::EMF_LIGHTING, true);
 	m_material.setFlag(video::EMF_BACK_FACE_CULLING, false);
 	m_material.setFlag(video::EMF_BILINEAR_FILTER, false);
 	m_material.setFlag(video::EMF_FOG_ENABLE, true);

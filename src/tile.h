@@ -318,7 +318,7 @@ struct TileSpec
 		else if(material_type == MATERIAL_ALPHA_BLEND)
 			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
 
-		material.setFlag(video::EMF_LIGHTING, false);
+		material.setFlag(video::EMF_LIGHTING, true);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 		material.setFlag(video::EMF_FOG_ENABLE, true);
 

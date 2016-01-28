@@ -681,6 +681,7 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 
 void MapBlockMesh::refresh(u32 daynight_ratio)
 {
+	return;
 	if (m_mesh == NULL)
 		return;
 

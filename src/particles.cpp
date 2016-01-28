@@ -62,7 +62,7 @@ Particle::Particle(
 	m_camera_offset = v3s16(0,0,0);
 
 	// Texture
-	m_material.setFlag(video::EMF_LIGHTING, false);
+	m_material.setFlag(video::EMF_LIGHTING, true);
 	m_material.setFlag(video::EMF_BACK_FACE_CULLING, false);
 	m_material.setFlag(video::EMF_BILINEAR_FILTER, false);
 	m_material.setFlag(video::EMF_FOG_ENABLE, true);

@@ -45,7 +45,8 @@ Sky::Sky(scene::ISceneNode* parent, scene::ISceneManager* mgr, s32 id):
 		m_space(false),
 		m_bgcolor_bright_f(1,1,1,1),
 		m_skycolor_bright_f(1,0,0,0),
-		m_cloudcolor_bright_f(1,1,1,1)
+		m_cloudcolor_bright_f(1,1,1,1),
+		m_ambient(255,255,255,255)
 {
 	setAutomaticCulling(scene::EAC_OFF);
 	Box.MaxEdge.set(0,0,0);
@@ -83,6 +84,9 @@ Sky::Sky(scene::ISceneNode* parent, scene::ISceneManager* mgr, s32 id):
 		);
 		m_stars[i].normalize();
 	}
+
+	m_light = SceneManager->addLightSceneNode();
+	m_light->setPosition(v3f(0,0,0));
 }
 
 void Sky::OnRegisterSceneNode()
@@ -336,4 +340,58 @@ void Sky::update(
 		m_cloudcolor_bright_f.getBlue() * m_cloud_brightness,
 		1.0
 	);
+
+	float ar_brightness = m_brightness;
+	float ag_brightness = m_brightness;
+	float ab_brightness = m_brightness;
+	if (sunlight_seen) {
+		ar_brightness = (time_brightness/5.0)+.01;
+		ag_brightness = (time_brightness/5.0)+.005;
+		ab_brightness = time_brightness/5.0;
+	}else{
+		ar_brightness = 0.1;
+		ag_brightness = 0.1;
+		ab_brightness = 0.1;
+	}
+	m_ambient = video::SColor(
+		255,
+		255.0*ar_brightness,
+		255.0*ag_brightness,
+		255.0*ab_brightness
+	);
+
+	SceneManager->setAmbientLight(m_ambient);
+	if (sunlight_seen) {
+		float rot = 180;
+		{
+			float nightlength = 0.41;
+			float wn = nightlength / 2;
+			float wicked_time_of_day = 0;
+			if (m_time_of_day > wn && m_time_of_day < 1.0 - wn) {
+				wicked_time_of_day = (m_time_of_day - wn)/(1.0-wn*2)*0.5 + 0.25;
+			}else if (m_time_of_day < 0.5) {
+				wicked_time_of_day = m_time_of_day / wn * 0.25;
+			}else{
+				wicked_time_of_day = 1.0 - ((1.0-m_time_of_day) / wn * 0.25);
+			}
+
+			// Draw sun
+			if (wicked_time_of_day > 0.15 && wicked_time_of_day < 0.85) {
+				rot = (wicked_time_of_day * 360 - 90);
+			}
+		}
+
+		if (rot == 180) {
+			m_light->setVisible(false);
+		}else{
+			m_light->setVisible(true);
+			m_light->setLightType(video::ELT_DIRECTIONAL);
+			video::SLight l = m_light->getLightData();
+			l.DiffuseColor = bgcolor_bright_normal_f;
+			m_light->setLightData(l);
+			m_light->setRotation(v3f(rot,-90,0));
+		}
+	}else{
+		m_light->setVisible(false);
+	}
 }
