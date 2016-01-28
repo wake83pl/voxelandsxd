@@ -3734,6 +3734,48 @@ int ClientMap::getBackgroundBrightness(
 	return ret;
 }
 
+int ClientMap::getAmbientBrightness(u32 daylight_factor, int oldvalue)
+{
+	//int br = 0;
+	//{
+		//v3f dir = m_camera_direction;
+		//float step = BS*1.5;
+		//bool sunlight_seen_now = false;
+		//bool ok = getVisibleBrightness(
+			//this,
+			//m_camera_position,
+			//dir,
+			//step,
+			//1.0,
+			//60.0,
+			//100.0,
+			//daylight_factor,
+			//80.0,
+			//&br,
+			//&sunlight_seen_now
+		//);
+		//values.push_back(br);
+	//}
+
+	int ret = 0;
+	int lc = 0;
+	int l;
+	v3s16 pos = floatToInt(m_camera_position, BS);
+	for (int i=0; i<27; i++) {
+		MapNode n = getNodeNoEx(pos+g_27dirs[i]);
+		l = decode_ambient_light(n.getLightBlend(daylight_factor));
+		if (l < 0)
+			continue;
+		ret += l;
+		lc++;
+	}
+
+	if (!lc)
+		return oldvalue;
+
+	return ret/lc;
+}
+
 void ClientMap::renderPostFx()
 {
 	// Sadly ISceneManager has no "post effects" render pass, in that case we

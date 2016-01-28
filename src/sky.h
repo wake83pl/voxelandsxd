@@ -55,9 +55,10 @@ public:
 	virtual u32 getMaterialCount() const
 	{ return SKY_MATERIAL_COUNT; }
 
-	void update(float time_of_day, float moon_phase, float time_brightness, float direct_brightness, bool sunlight_seen, bool in_space);
+	void update(float time_of_day, float moon_phase, float time_brightness, float direct_brightness, bool sunlight_seen, bool in_space, float face_brightness);
 
 	float getBrightness(){ return m_brightness; }
+	float getAmbientBrightness(){ return m_ambient_brightness; }
 	video::SColor getBgColor(){ return m_bgcolor; }
 	video::SColor getSkyColor(){ return m_skycolor; }
 
@@ -85,6 +86,7 @@ private:
 	video::SColor m_skycolor;
 	video::SColorf m_cloudcolor_f;
 	video::SColor m_ambient;
+	float m_ambient_brightness;
 	v3f m_stars[SKY_STAR_COUNT];
 	u16 m_star_indices[SKY_STAR_COUNT*4];
 	video::S3DVertex m_star_vertices[SKY_STAR_COUNT*4];

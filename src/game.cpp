@@ -1895,8 +1895,13 @@ void the_game(
 		}
 
 		float moon_phase = client.getEnv().getMoonPhase();
+		float face_brightness = 0;
+		{
+			float old_brightness = sky->getAmbientBrightness();
+			face_brightness = client.getEnv().getClientMap().getAmbientBrightness(daynight_ratio,(int)(old_brightness*255.5));
+		}
 
-		sky->update(time_of_day_smooth, moon_phase, time_brightness, direct_brightness, sunlight_seen, in_space);
+		sky->update(time_of_day_smooth, moon_phase, time_brightness, direct_brightness, sunlight_seen, in_space, face_brightness);
 
 		video::SColor bgcolor = sky->getBgColor();
 		video::SColor skycolor = sky->getSkyColor();

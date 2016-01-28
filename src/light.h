@@ -84,6 +84,7 @@ inline u8 undiminish_light(u8 light)
 }
 
 extern u8 light_decode_table[LIGHT_MAX+1];
+extern u8 light_ambient_decode_table[LIGHT_MAX+1];
 
 inline u8 decode_light(u8 light)
 {
@@ -94,6 +95,17 @@ inline u8 decode_light(u8 light)
 		light = LIGHT_MAX;
 
 	return light_decode_table[light];
+}
+
+inline u8 decode_ambient_light(u8 light)
+{
+	if(light == LIGHT_SUN)
+		return light_ambient_decode_table[LIGHT_MAX];
+
+	if(light > LIGHT_MAX)
+		light = LIGHT_MAX;
+
+	return light_ambient_decode_table[light];
 }
 
 // 0 <= daylight_factor <= 1000

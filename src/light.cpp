@@ -43,6 +43,24 @@ u8 light_decode_table[LIGHT_MAX+1] = {
 	127,
 	255,
 };
+u8 light_ambient_decode_table[LIGHT_MAX+1] =
+{
+	8,
+	11,
+	14,
+	18,
+	22,
+	29,
+	37,
+	47,
+	60,
+	76,
+	97,
+	123,
+	157,
+	200,
+	255,
+};
 //#elif 1
 //// This is good
 //// a_n+1 = a_n * 0.786

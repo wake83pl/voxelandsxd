@@ -46,7 +46,8 @@ Sky::Sky(scene::ISceneNode* parent, scene::ISceneManager* mgr, s32 id):
 		m_bgcolor_bright_f(1,1,1,1),
 		m_skycolor_bright_f(1,0,0,0),
 		m_cloudcolor_bright_f(1,1,1,1),
-		m_ambient(255,255,255,255)
+		m_ambient(255,255,255,255),
+		m_ambient_brightness(0.5)
 {
 	setAutomaticCulling(scene::EAC_OFF);
 	Box.MaxEdge.set(0,0,0);
@@ -245,7 +246,8 @@ void Sky::update(
 	float time_brightness,
 	float direct_brightness,
 	bool sunlight_seen,
-	bool in_space
+	bool in_space,
+	float face_brightness
 )
 {
 	// Stabilize initial brightness and color values by flooding updates
@@ -253,7 +255,7 @@ void Sky::update(
 		m_first_update = false;
 		m_moon_phase = moon_phase;
 		for (u32 i=0; i<100; i++) {
-			update(time_of_day, moon_phase, time_brightness, direct_brightness, sunlight_seen, in_space);
+			update(time_of_day, moon_phase, time_brightness, direct_brightness, sunlight_seen, in_space, face_brightness);
 		}
 		return;
 	}
@@ -332,23 +334,15 @@ void Sky::update(
 		1.0
 	);
 
-	float ar_brightness = m_brightness;
-	float ag_brightness = m_brightness;
-	float ab_brightness = m_brightness;
-	//if (sunlight_seen) {
-		ar_brightness = (time_brightness/2.0)+.01;
-		ag_brightness = (time_brightness/2.0)+.005;
-		ab_brightness = time_brightness/2.0;
-	//}else{
-		//ar_brightness = 0.1;
-		//ag_brightness = 0.1;
-		//ab_brightness = 0.1;
-	//}
+	m_ambient_brightness = (face_brightness*0.9);
+	u8 ar_brightness = m_ambient_brightness+2;
+	u8 ag_brightness = m_ambient_brightness+1;
+	u8 ab_brightness = m_ambient_brightness;
 	m_ambient = video::SColor(
 		255,
-		255.0*ar_brightness,
-		255.0*ag_brightness,
-		255.0*ab_brightness
+		ar_brightness,
+		ag_brightness,
+		ab_brightness
 	);
 
 	SceneManager->setAmbientLight(m_ambient);
@@ -372,7 +366,7 @@ void Sky::update(
 			}
 		}
 
-		if (rot == 180) {
+		if (rot <0 || rot > 180) {
 			m_light->setVisible(false);
 		}else{
 			m_light->setVisible(true);
