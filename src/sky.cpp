@@ -265,14 +265,11 @@ void Sky::update(
 
 	m_space = in_space;
 
-	bool is_dawn = (!in_space && time_brightness >= 0.20 && time_brightness < 0.50);
-
 	video::SColorf bgcolor_bright_normal_f(170./255,200./255,230./255, 1.0);
 	video::SColorf bgcolor_bright_indoor_f(100./255,100./255,100./255, 1.0);
 	video::SColorf bgcolor_bright_dawn_f(0.666*1.2,0.549*1.0,0.220*1.2,1.0);
 
 	video::SColorf skycolor_bright_normal_f = video::SColor(255, 121, 141, 232);
-	video::SColorf skycolor_bright_dawn_f = video::SColor(255, 46, 60, 132);
 
 	video::SColorf cloudcolor_bright_normal_f = video::SColor(255, 240,240,255);
 	video::SColorf cloudcolor_bright_dawn_f(1.0, 0.7, 0.5, 1.0);
@@ -294,15 +291,9 @@ void Sky::update(
 	m_clouds_visible = !in_space;
 	float color_change_fraction = 0.98;
 	if (sunlight_seen) {
-		if (is_dawn) {
-			m_bgcolor_bright_f = m_bgcolor_bright_f.getInterpolated(bgcolor_bright_dawn_f, color_change_fraction);
-			m_skycolor_bright_f = m_skycolor_bright_f.getInterpolated(skycolor_bright_dawn_f, color_change_fraction);
-			m_cloudcolor_bright_f = m_cloudcolor_bright_f.getInterpolated(cloudcolor_bright_dawn_f, color_change_fraction);
-		}else{
-			m_bgcolor_bright_f = m_bgcolor_bright_f.getInterpolated(bgcolor_bright_normal_f, color_change_fraction);
-			m_skycolor_bright_f = m_skycolor_bright_f.getInterpolated(skycolor_bright_normal_f, color_change_fraction);
-			m_cloudcolor_bright_f = m_cloudcolor_bright_f.getInterpolated(cloudcolor_bright_normal_f, color_change_fraction);
-		}
+		m_bgcolor_bright_f = m_bgcolor_bright_f.getInterpolated(bgcolor_bright_normal_f, color_change_fraction);
+		m_skycolor_bright_f = m_skycolor_bright_f.getInterpolated(skycolor_bright_normal_f, color_change_fraction);
+		m_cloudcolor_bright_f = m_cloudcolor_bright_f.getInterpolated(cloudcolor_bright_normal_f, color_change_fraction);
 	}else{
 		m_bgcolor_bright_f = m_bgcolor_bright_f.getInterpolated(bgcolor_bright_indoor_f, color_change_fraction);
 		m_cloudcolor_bright_f = m_cloudcolor_bright_f.getInterpolated(cloudcolor_bright_normal_f, color_change_fraction);
@@ -344,15 +335,15 @@ void Sky::update(
 	float ar_brightness = m_brightness;
 	float ag_brightness = m_brightness;
 	float ab_brightness = m_brightness;
-	if (sunlight_seen) {
-		ar_brightness = (time_brightness/5.0)+.01;
-		ag_brightness = (time_brightness/5.0)+.005;
-		ab_brightness = time_brightness/5.0;
-	}else{
-		ar_brightness = 0.1;
-		ag_brightness = 0.1;
-		ab_brightness = 0.1;
-	}
+	//if (sunlight_seen) {
+		ar_brightness = (time_brightness/2.0)+.01;
+		ag_brightness = (time_brightness/2.0)+.005;
+		ab_brightness = time_brightness/2.0;
+	//}else{
+		//ar_brightness = 0.1;
+		//ag_brightness = 0.1;
+		//ab_brightness = 0.1;
+	//}
 	m_ambient = video::SColor(
 		255,
 		255.0*ar_brightness,
@@ -361,7 +352,7 @@ void Sky::update(
 	);
 
 	SceneManager->setAmbientLight(m_ambient);
-	if (sunlight_seen) {
+	//if (sunlight_seen) {
 		float rot = 180;
 		{
 			float nightlength = 0.41;
@@ -391,7 +382,7 @@ void Sky::update(
 			m_light->setLightData(l);
 			m_light->setRotation(v3f(rot,-90,0));
 		}
-	}else{
-		m_light->setVisible(false);
-	}
+	//}else{
+		//m_light->setVisible(false);
+	//}
 }

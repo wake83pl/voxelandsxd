@@ -67,7 +67,6 @@ struct MapBlockSound
 struct MeshMakeData
 {
 	u32 m_daynight_ratio;
-	bool m_refresh_only;
 	VoxelManipulator m_vmanip;
 	v3s16 m_blockpos;
 	v3s16 m_blockpos_nodes;
@@ -85,7 +84,6 @@ struct MeshMakeData
 	std::map<v3s16,MapBlockSound> *m_sounds;
 
 	MeshMakeData():
-		m_refresh_only(false),
 		m_single(NULL),
 		m_BS(BS),
 		m_BSd(0.0),
@@ -235,7 +233,6 @@ public:
 	}
 
 	void generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mutex);
-	void refresh(u32 daynight_ratio);
 
 	void updateCameraOffset(v3s16 camera_offset);
 

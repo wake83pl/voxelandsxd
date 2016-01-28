@@ -3208,8 +3208,6 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 	*/
 	int time1 = time(0);
 
-	u32 daynight_ratio = m_client->getEnv().getDayNightRatio();
-
 	m_camera_mutex.Lock();
 	v3f camera_position = m_camera_position;
 	v3f camera_direction = m_camera_direction;
@@ -3240,9 +3238,6 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 
 	u32 vertex_count = 0;
 	u32 meshbuffer_count = 0;
-
-	// For limiting number of mesh updates per frame
-	u32 mesh_update_count = 0;
 
 	// Number of blocks in rendering range
 	u32 blocks_in_range = 0;
@@ -3356,27 +3351,6 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 				This has to be done with the mesh_mutex unlocked
 			*/
 			// Pretty random but this should work somewhat nicely
-			if (
-				mesh_expired
-				&& (
-					d < faraway
-					|| mesh_update_count < 20
-					|| (m_control.range_all && mesh_update_count < 100)
-				)
-			) {
-				mesh_update_count++;
-
-				// Mesh has been expired: generate new mesh
-				if (block->mesh) {
-					JMutexAutoLock lock(block->mesh_mutex);
-					block->mesh->refresh(daynight_ratio);
-					block->setMeshExpired(false);
-				}else{
-					m_client->addUpdateMeshTask(block->getPos(),false,true);
-				}
-
-				mesh_expired = false;
-			}
 #endif
 
 			/*

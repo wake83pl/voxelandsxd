@@ -126,7 +126,7 @@ scene::IAnimatedMesh* createNodeBoxMesh(std::vector<NodeBox> nodeboxes, v3f scal
 			scene::IMeshBuffer *buf = new scene::SMeshBuffer();
 			buf->append(vertices + 4 * i, 4, indices, 6);
 			// Set default material
-			buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+			buf->getMaterial().setFlag(video::EMF_LIGHTING, true);
 			buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
 			buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 			// Add mesh buffer to mesh
@@ -389,7 +389,7 @@ scene::IAnimatedMesh* createExtrudedMesh(video::ITexture *texture,
 		scene::IMeshBuffer *buf = mesh->getMeshBuffer(0);
 		if (buf) {
 			buf->getMaterial().setTexture(0, texture);
-			buf->getMaterial().setFlag(video::EMF_LIGHTING, false);
+			buf->getMaterial().setFlag(video::EMF_LIGHTING, true);
 			buf->getMaterial().setFlag(video::EMF_BILINEAR_FILTER, false);
 			buf->getMaterial().MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL_REF;
 		}
@@ -777,6 +777,7 @@ void ExtrudedSpriteSceneNode::setArm(video::ITexture *texture)
 
 void ExtrudedSpriteSceneNode::updateLight(u8 light)
 {
+	light = 255;
 	m_light = light;
 	video::SColor color(255,light,light,light);
 	setMeshVerticesColor(m_meshnode->getMesh(), color);

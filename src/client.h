@@ -298,7 +298,7 @@ public:
 	uint64_t getMapSeed() {return m_map_seed;}
 	MapGenType getMapType() {return m_map_type;}
 
-	void addUpdateMeshTask(v3s16 blockpos, bool ack_to_server=false, bool refresh_only=false);
+	void addUpdateMeshTask(v3s16 blockpos, bool ack_to_server=false);
 	// Including blocks at appropriate edges
 	void addUpdateMeshTaskWithEdge(v3s16 blockpos, bool ack_to_server=false);
 

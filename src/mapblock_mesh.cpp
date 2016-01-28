@@ -670,52 +670,12 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 	m_farmesh = fmesh;
 	m_meshdata.swap(data->m_meshdata);
 	m_fardata.swap(data->m_fardata);
-	refresh(data->m_daynight_ratio);
 	m_mesh->recalculateBoundingBox();
 
 	if (mutex != NULL)
 		mutex->Unlock();
 
 	END_DEBUG_EXCEPTION_HANDLER(errorstream)
-}
-
-void MapBlockMesh::refresh(u32 daynight_ratio)
-{
-	return;
-	if (m_mesh == NULL)
-		return;
-
-	u16 mc = m_mesh->getMeshBufferCount();
-	for (u16 j=0; j<mc; j++) {
-		scene::IMeshBuffer *buf = m_mesh->getMeshBuffer(j);
-		if (buf == 0)
-			continue;
-		u16 vc = buf->getVertexCount();
-		if (!vc)
-			continue;
-		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
-		if (vertices == 0)
-			continue;
-		u32 *c = m_meshdata[j].colours.data();
-		for (u16 i=0; i<vc; i++) {
-			vertices[i].Color = blend_light(c[i],daynight_ratio);
-		}
-	}
-	mc = m_farmesh->getMeshBufferCount();
-	for (u16 j=0; j<mc; j++) {
-		scene::IMeshBuffer *buf = m_farmesh->getMeshBuffer(j);
-		if (buf == 0)
-			continue;
-		u16 vc = buf->getVertexCount();
-		if (!vc)
-			continue;
-		video::S3DVertex *vertices = (video::S3DVertex*)buf->getVertices();
-		if (vertices == 0)
-			continue;
-		for (u16 i=0; i<vc; i++) {
-			vertices[i].Color = blend_light(0x0F,daynight_ratio);
-		}
-	}
 }
 
 void MapBlockMesh::updateCameraOffset(v3s16 camera_offset)

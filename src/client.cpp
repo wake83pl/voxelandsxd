@@ -102,14 +102,9 @@ void MeshUpdateQueue::addBlock(v3s16 p, MeshMakeData *data, bool ack_block_to_se
 	for (i=m_queue.begin(); i!=m_queue.end(); i++) {
 		QueuedMeshUpdate *q = *i;
 		if (q->p == p) {
-			if (q->data && data->m_refresh_only) {
-				q->data->m_daynight_ratio = data->m_daynight_ratio;
-				delete data;
-			}else{
-				if (q->data)
-					delete q->data;
-				q->data = data;
-			}
+			if (q->data)
+				delete q->data;
+			q->data = data;
 			if (ack_block_to_server)
 				q->ack_block_to_server = true;
 			return;
@@ -163,34 +158,24 @@ void * MeshUpdateThread::Thread()
 
 		ScopeProfiler sp(g_profiler, "Client: Mesh making");
 
-		if (q->data && q->data->m_refresh_only) {
-			MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(q->p);
-			if (block && block->mesh) {
-				{
-					JMutexAutoLock lock(block->mesh_mutex);
-					block->mesh->refresh(q->data->m_daynight_ratio);
-				}
-			}
-		}else{
-			MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(q->p);
-			if (block && block->mesh) {
-				block->mesh->generate(q->data, m_camera_offset, &block->mesh_mutex);
-				if (q->ack_block_to_server) {
-					MeshUpdateResult r;
-					r.p = q->p;
-					r.mesh = NULL;
-					r.ack_block_to_server = true;
-					m_queue_out.push_back(r);
-				}
-			}else if (block) {
-				MapBlockMesh *mesh_new = new MapBlockMesh(q->data, m_camera_offset);
+		MapBlock *block = m_env->getMap().getBlockNoCreateNoEx(q->p);
+		if (block && block->mesh) {
+			block->mesh->generate(q->data, m_camera_offset, &block->mesh_mutex);
+			if (q->ack_block_to_server) {
 				MeshUpdateResult r;
 				r.p = q->p;
-				r.mesh = mesh_new;
-				r.ack_block_to_server = q->ack_block_to_server;
-
+				r.mesh = NULL;
+				r.ack_block_to_server = true;
 				m_queue_out.push_back(r);
 			}
+		}else if (block) {
+			MapBlockMesh *mesh_new = new MapBlockMesh(q->data, m_camera_offset);
+			MeshUpdateResult r;
+			r.p = q->p;
+			r.mesh = mesh_new;
+			r.ack_block_to_server = q->ack_block_to_server;
+
+			m_queue_out.push_back(r);
 		}
 
 		delete q;
@@ -2180,7 +2165,7 @@ float Client::getEnergy()
 	return player->getEnergy();
 }
 
-void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server, bool refresh_only)
+void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server)
 {
 	MapBlock *b = m_env.getMap().getBlockNoCreateNoEx(p);
 	if (b == NULL)
@@ -2193,16 +2178,11 @@ void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server, bool refresh_only)
 	MeshMakeData *data = new MeshMakeData();
 	data->m_env = &m_env;
 
-	if (refresh_only) {
-		data->m_daynight_ratio = m_env.getDayNightRatio();
-		data->m_refresh_only = true;
-	}else{
-		{
-			data->fill(m_env.getDayNightRatio(), b);
-		}
-
-		data->m_sounds = &b->m_sounds;
+	{
+		data->fill(m_env.getDayNightRatio(), b);
 	}
+
+	data->m_sounds = &b->m_sounds;
 
 	// Add task to queue
 	m_mesh_update_thread.m_queue_in.addBlock(p, data, ack_to_server);

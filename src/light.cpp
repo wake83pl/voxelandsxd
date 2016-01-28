@@ -25,47 +25,65 @@
 
 #include "light.h"
 
-#if 1
-// This is good
-// a_n+1 = a_n * 0.786
-// Length of LIGHT_MAX+1 means LIGHT_MAX is the last value.
-// LIGHT_SUN is read as LIGHT_MAX from here.
-u8 light_decode_table[LIGHT_MAX+1] =
-{
-8,
-11,
-14,
-18,
-22,
-29,
-37,
-47,
-60,
-76,
-97,
-123,
-157,
-200,
-255,
+//#if 1
+u8 light_decode_table[LIGHT_MAX+1] = {
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	2,
+	3,
+	7,
+	15,
+	31,
+	63,
+	127,
+	255,
 };
-#else
-// Use for debugging in dark
-u8 light_decode_table[LIGHT_MAX+1] =
-{
-58,
-64,
-72,
-80,
-88,
-98,
-109,
-121,
-135,
-150,
-167,
-185,
-206,
-229,
-255,
-};
-#endif
+//#elif 1
+//// This is good
+//// a_n+1 = a_n * 0.786
+//// Length of LIGHT_MAX+1 means LIGHT_MAX is the last value.
+//// LIGHT_SUN is read as LIGHT_MAX from here.
+//u8 light_decode_table[LIGHT_MAX+1] =
+//{
+//8,
+//11,
+//14,
+//18,
+//22,
+//29,
+//37,
+//47,
+//60,
+//76,
+//97,
+//123,
+//157,
+//200,
+//255,
+//};
+//#else
+//// Use for debugging in dark
+//u8 light_decode_table[LIGHT_MAX+1] =
+//{
+//58,
+//64,
+//72,
+//80,
+//88,
+//98,
+//109,
+//121,
+//135,
+//150,
+//167,
+//185,
+//206,
+//229,
+//255,
+//};
+//#endif
