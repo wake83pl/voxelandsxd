@@ -34,6 +34,10 @@ extern GameSettings *g_settings;
 class ITextureSource;
 extern ITextureSource *g_texturesource;
 
+// Lights!
+class CMyLightManager;
+extern CMyLightManager *g_lightmanager;
+
 // Global profiler
 class Profiler;
 extern Profiler *g_profiler;

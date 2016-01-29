@@ -302,7 +302,7 @@ struct TileSpec
 	}
 
 	// Sets everything else except the texture in the material
-	void applyMaterialOptions(video::SMaterial &material) const
+	void applyMaterialOptions(video::SMaterial &material, bool lighting) const
 	{
 		if(alpha != 255 && material_type != MATERIAL_ALPHA_VERTEX)
 			dstream<<"WARNING: TileSpec: alpha != 255 "
@@ -318,17 +318,17 @@ struct TileSpec
 		else if(material_type == MATERIAL_ALPHA_BLEND)
 			material.MaterialType = video::EMT_TRANSPARENT_ALPHA_CHANNEL;
 
-		material.setFlag(video::EMF_LIGHTING, true);
+		material.setFlag(video::EMF_LIGHTING, lighting);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
 		material.setFlag(video::EMF_FOG_ENABLE, true);
 
 		material.BackfaceCulling = (material_flags & MATERIAL_FLAG_BACKFACE_CULLING) ? true : false;
 	}
 
-	video::SMaterial getMaterial()
+	video::SMaterial getMaterial(bool lighting=true)
 	{
 		video::SMaterial m;
-		applyMaterialOptions(m);
+		applyMaterialOptions(m,lighting);
 		m.setTexture(0,texture.atlas);
 		return m;
 	}

@@ -1544,6 +1544,7 @@ void the_game(
 			update_particles_camera_offset(camera_offset);
 			if (clouds)
 				clouds->updateCameraOffset(camera_offset);
+			g_lightmanager->updateCameraOffset(camera_offset);
 		}
 
 		bool left_punch = false;

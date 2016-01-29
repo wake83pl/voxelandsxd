@@ -347,36 +347,36 @@ void Sky::update(
 
 	SceneManager->setAmbientLight(m_ambient);
 	//if (sunlight_seen) {
-		float rot = 180;
-		{
-			float nightlength = 0.41;
-			float wn = nightlength / 2;
-			float wicked_time_of_day = 0;
-			if (m_time_of_day > wn && m_time_of_day < 1.0 - wn) {
-				wicked_time_of_day = (m_time_of_day - wn)/(1.0-wn*2)*0.5 + 0.25;
-			}else if (m_time_of_day < 0.5) {
-				wicked_time_of_day = m_time_of_day / wn * 0.25;
-			}else{
-				wicked_time_of_day = 1.0 - ((1.0-m_time_of_day) / wn * 0.25);
-			}
+		//float rot = 180;
+		//{
+			//float nightlength = 0.41;
+			//float wn = nightlength / 2;
+			//float wicked_time_of_day = 0;
+			//if (m_time_of_day > wn && m_time_of_day < 1.0 - wn) {
+				//wicked_time_of_day = (m_time_of_day - wn)/(1.0-wn*2)*0.5 + 0.25;
+			//}else if (m_time_of_day < 0.5) {
+				//wicked_time_of_day = m_time_of_day / wn * 0.25;
+			//}else{
+				//wicked_time_of_day = 1.0 - ((1.0-m_time_of_day) / wn * 0.25);
+			//}
 
-			// Draw sun
-			if (wicked_time_of_day > 0.15 && wicked_time_of_day < 0.85) {
-				rot = (wicked_time_of_day * 360 - 90);
-			}
-		}
+			//// Draw sun
+			//if (wicked_time_of_day > 0.15 && wicked_time_of_day < 0.85) {
+				//rot = (wicked_time_of_day * 360 - 90);
+			//}
+		//}
 
-		if (rot <0 || rot > 180) {
-			m_light->setVisible(false);
-		}else{
-			m_light->setVisible(true);
-			m_light->setLightType(video::ELT_DIRECTIONAL);
-			video::SLight l = m_light->getLightData();
-			l.DiffuseColor = bgcolor_bright_normal_f;
-			m_light->setLightData(l);
-			m_light->setRotation(v3f(rot,-90,0));
-		}
+		//if (rot <0 || rot > 180) {
+			//m_light->setVisible(false);
+		//}else{
+			//m_light->setVisible(true);
+			//m_light->setLightType(video::ELT_DIRECTIONAL);
+			//video::SLight l = m_light->getLightData();
+			//l.DiffuseColor = bgcolor_bright_normal_f;
+			//m_light->setLightData(l);
+			//m_light->setRotation(v3f(rot,-90,0));
+		//}
 	//}else{
-		//m_light->setVisible(false);
+		m_light->setVisible(false);
 	//}
 }

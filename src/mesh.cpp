@@ -686,7 +686,7 @@ void ExtrudedSpriteSceneNode::setCube(const TileSpec tiles[6])
 		video::SMaterial& material = m_meshnode->getMaterial(i);
 		material.setFlag(video::EMF_LIGHTING, true);
 		material.setFlag(video::EMF_BILINEAR_FILTER, false);
-		tiles[i].applyMaterialOptions(material);
+		tiles[i].applyMaterialOptions(material,true);
 		material.setTexture(0, atlas);
 		material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
 		material.getTextureMatrix(0).setTextureScale(size.X, size.Y);
@@ -713,7 +713,7 @@ void ExtrudedSpriteSceneNode::setNodeBox(content_t c)
 			video::SMaterial& material = m_cubemesh->getMeshBuffer((i*6)+t)->getMaterial();
 			material.setFlag(video::EMF_LIGHTING, true);
 			material.setFlag(video::EMF_BILINEAR_FILTER, false);
-			content_features(c).tiles[i].applyMaterialOptions(material);
+			content_features(c).tiles[i].applyMaterialOptions(material,true);
 			material.setTexture(0, atlas);
 			material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
 			material.getTextureMatrix(0).setTextureScale(size.X, size.Y);

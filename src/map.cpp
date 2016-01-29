@@ -3474,6 +3474,8 @@ void ClientMap::renderMap(video::IVideoDriver* driver, s32 pass)
 			if (!m)
 				continue;
 
+			g_lightmanager->enableBlockLights(block->getPos());
+
 			u32 c = m->getMeshBufferCount();
 			bool stuff_actually_drawn = false;
 			for (u32 i=0; i<c; i++) {

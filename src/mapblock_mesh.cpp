@@ -480,6 +480,7 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 	data->light_detail = g_settings->getU16("light_detail");
 	m_pos = data->m_blockpos;
 	SelectedNode selected;
+	std::vector<LightData> lights;
 
 	for(s16 z=0; z<MAP_BLOCKSIZE; z++)
 	for(s16 y=0; y<MAP_BLOCKSIZE; y++)
@@ -537,6 +538,8 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 				data->m_sounds->erase(i);
 			}
 		}
+		if (content_features(n).light_source > 0)
+			lights.push_back(LightData(p,content_features(n).light_source));
 		if (data->light_detail > 1 && !selected.is_coloured)
 			meshgen_preset_smooth_lights(data,p);
 		switch (content_features(n).draw_type) {
@@ -671,6 +674,8 @@ void MapBlockMesh::generate(MeshMakeData *data, v3s16 camera_offset, JMutex *mut
 	m_meshdata.swap(data->m_meshdata);
 	m_fardata.swap(data->m_fardata);
 	m_mesh->recalculateBoundingBox();
+
+	g_lightmanager->setBlockLights(data->m_blockpos,lights);
 
 	if (mutex != NULL)
 		mutex->Unlock();

@@ -129,7 +129,7 @@ void MobCAO::addToScene(scene::ISceneManager *smgr)
 				video::SMaterial& material = mesh->getMeshBuffer((i*6)+t)->getMaterial();
 				material.setFlag(video::EMF_LIGHTING, true);
 				material.setFlag(video::EMF_BILINEAR_FILTER, false);
-				m.tiles[i].applyMaterialOptions(material);
+				m.tiles[i].applyMaterialOptions(material,true);
 				material.setTexture(0, atlas);
 				material.getTextureMatrix(0).setTextureTranslate(pos.X, pos.Y);
 				material.getTextureMatrix(0).setTextureScale(size.X, size.Y);

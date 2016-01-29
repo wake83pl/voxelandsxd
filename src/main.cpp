@@ -67,6 +67,7 @@
 #include "settings.h"
 #include "profiler.h"
 #include "log.h"
+#include "light.h"
 // for the init functions
 #include "content_craft.h"
 #include "content_clothesitem.h"
@@ -94,6 +95,8 @@ GameSettings *g_settings = &main_settings;
 Profiler main_profiler;
 Profiler *g_profiler = &main_profiler;
 
+// lights!
+CMyLightManager *g_lightmanager = NULL;
 /*
 	Random stuff
 */
@@ -1129,6 +1132,9 @@ int main(int argc, char *argv[])
 	font = skin->getFont();
 	assert(font);
 	drawLoadingScreen(device,wgettext("Setting Up UI"));
+
+	g_lightmanager = new CMyLightManager(smgr);
+	smgr->setLightManager(g_lightmanager);
 
 	u32 text_height = font->getDimension(L"Hello, world!").Height;
 	infostream<<"text_height="<<text_height<<std::endl;

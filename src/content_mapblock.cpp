@@ -3125,7 +3125,7 @@ void meshgen_glasslike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &se
 			std::vector<u32> colours;
 			meshgen_custom_lights(colours,255,255,255,255,4);
 
-			data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+			data->append(tile.getMaterial(false), vertices, 4, indices, 6, colours);
 		}
 	}
 }
@@ -3307,7 +3307,7 @@ void meshgen_torchlike(MeshMakeData *data, v3s16 p, MapNode &n, SelectedNode &se
 			std::vector<u32> colours;
 			meshgen_custom_lights(colours,255,255,255,255,4);
 
-			data->append(tile.getMaterial(), vertices, 4, indices, 6, colours);
+			data->append(tile.getMaterial(false), vertices, 4, indices, 6, colours);
 		}
 	}
 }
